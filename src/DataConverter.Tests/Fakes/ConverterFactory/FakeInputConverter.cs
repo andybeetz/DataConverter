@@ -15,7 +15,7 @@ namespace DataConverter.Tests.Fakes.ConverterFactory
 
 		public string SupportedType => _supportedType;
 
-		public bool GetInput(string inputType, string inputLocation, out object inputData)
+		public bool GetInput(string inputLocation, out object inputData)
 		{
 			inputData = inputLocation;
 

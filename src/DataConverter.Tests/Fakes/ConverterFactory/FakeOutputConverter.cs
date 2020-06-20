@@ -15,7 +15,7 @@ namespace DataConverter.Tests.Fakes.ConverterFactory
 			_succeeds = succeeds;
 		}
 
-		public bool PushOutput(object data, string outputType, string outputLocation)
+		public bool PushOutput(object data, string outputLocation)
 		{
 			ReceivedData = data;
 			return _succeeds;

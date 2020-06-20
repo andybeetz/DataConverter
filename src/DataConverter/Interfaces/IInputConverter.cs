@@ -2,7 +2,7 @@
 {
 	public interface IInputConverter
 	{
-		bool GetInput(string inputType, string inputLocation, out object inputData);
+		bool GetInput(string inputLocation, out object inputData);
 		string SupportedType { get; }
 	}
 }
