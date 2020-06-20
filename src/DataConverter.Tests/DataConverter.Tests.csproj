@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UnitTests\" />
+    <ProjectReference Include="..\DataConverter\DataConverter.csproj" />
   </ItemGroup>
 
 </Project>
