@@ -1,6 +1,9 @@
 ﻿
 using DataConverter.Configuration;
 using DataConverter.Conversion;
+using DataConverter.Interfaces;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using System;
 
@@ -10,6 +13,8 @@ namespace DataConverter
 	{
 		static int Main(string[] args)
 		{
+			Application_Start();
+
 			var options = OptionsParser.Parse(args);
 			var returnCode = 0;
 
@@ -40,6 +45,17 @@ namespace DataConverter
 			}
 
 			return returnCode;
+		}
+
+		static void Application_Start()
+		{
+			//setup our DI
+			var serviceProvider = new ServiceCollection()
+				.AddSingleton<IConverterFactory, ConverterFactory>(x => { return new ConverterFactory(); })
+				.BuildServiceProvider();
+
+			// initialise the converter
+			Converter.Init(serviceProvider.GetService<IConverterFactory>());
 		}
 	}
 }

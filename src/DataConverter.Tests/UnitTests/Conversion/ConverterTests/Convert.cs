@@ -1,9 +1,12 @@
 ﻿using DataConverter.Configuration;
 using DataConverter.Conversion;
+using DataConverter.Interfaces;
+using DataConverter.Tests.Fakes.ConverterFactory;
 
 using NUnit.Framework;
 
 using System;
+using System.Collections.Generic;
 
 namespace DataConverter.Tests.UnitTests.Conversion.ConverterTests
 {
@@ -43,19 +46,59 @@ namespace DataConverter.Tests.UnitTests.Conversion.ConverterTests
 		}
 
 		[Test]
-		public void Convert_InputTypeNotRecognised_ThrowsArgumentOutOfRange()
+		public void Convert_InputTypeNotRecognised_ReturnsFailedConversionResult()
 		{
-			void Convert()
-			{
-				//Arrange
-				Options options = new Options() { InputType = "unknowninputtype", Parsed = true };
+			//Arrange
+			Options options = new Options() { InputType = "unknowninputtype", Parsed = true };
+			Converter.Init(new FakeConverterFactory(new List<IInputConverter>(), new List<IOutputConverter>()));
 
-				//Act
-				Converter.Convert(options);
-			}
+			//Act
+			var result = Converter.Convert(options);
 
 			//Assert
-			Assert.Throws(typeof(ArgumentOutOfRangeException), Convert);
+			Assert.That(result.Type, Is.EqualTo(ConversionResultType.Failed));
+		}
+
+		[Test]
+		public void Convert_OutputTypeNotRecognised_ReturnsFailedConversionResult()
+		{
+			//Arrange
+			Options options = new Options() { OutputType = "unknownoutputtype", Parsed = true };
+			Converter.Init(new FakeConverterFactory(new List<IInputConverter>(), new List<IOutputConverter>()));
+
+			//Act
+			var result = Converter.Convert(options);
+
+			//Assert
+			Assert.That(result.Type, Is.EqualTo(ConversionResultType.Failed));
+		}
+
+		[Test]
+		public void Convert_ConvertersSucceed_ReturnsSuccessfulConversionResult()
+		{
+			//Arrange
+			Options options = new Options() { InputType = "supported", InputLocation = "pass", OutputType = "supported", OutputLocation = "pass", Parsed = true };
+			Converter.Init(new FakeConverterFactory(new List<IInputConverter>() { new FakeInputConverter("supported", true) }, new List<IOutputConverter>() { new FakeOutputConverter("supported", true) }));
+
+			//Act
+			var result = Converter.Convert(options);
+
+			//Assert
+			Assert.That(result.Type, Is.EqualTo(ConversionResultType.Successful));
+		}
+
+		[Test]
+		public void Convert_OutputConverterFails_ReturnsFailedConversionResult()
+		{
+			//Arrange
+			Options options = new Options() { InputType = "supported", InputLocation = "pass", OutputType = "supported", OutputLocation = "pass", Parsed = true };
+			Converter.Init(new FakeConverterFactory(new List<IInputConverter>() { new FakeInputConverter("supported", true) }, new List<IOutputConverter>() { new FakeOutputConverter("supported", false) }));
+
+			//Act
+			var result = Converter.Convert(options);
+
+			//Assert
+			Assert.That(result.Type, Is.EqualTo(ConversionResultType.Failed));
 		}
 	}
 }

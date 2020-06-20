@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DataConverter": {
+      "commandName": "Project",
+      "commandLineArgs": "-i myfile.csv --inputtype csv -o myfile.json --outputtype json"
+    }
+  }
+}
