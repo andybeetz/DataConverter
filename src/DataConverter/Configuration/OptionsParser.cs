@@ -6,7 +6,7 @@ namespace DataConverter.Configuration
 	{
 		public static Options Parse(IEnumerable<string> arguments)
 		{
-			return null;
+			return new Options();
 		}
 	}
 }
