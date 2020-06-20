@@ -100,5 +100,35 @@ namespace DataConverter.Tests.UnitTests.Conversion.ConverterTests
 			//Assert
 			Assert.That(result.Type, Is.EqualTo(ConversionResultType.Failed));
 		}
+
+		[Test]
+		public void Convert_InputConverterFails_ReturnsFailedConversionResult()
+		{
+			//Arrange
+			Options options = new Options() { InputType = "supported", InputLocation = "pass", OutputType = "supported", OutputLocation = "pass", Parsed = true };
+			Converter.Init(new FakeConverterFactory(new List<IInputConverter>() { new FakeInputConverter("supported", false) }, new List<IOutputConverter>() { new FakeOutputConverter("supported", true) }));
+
+			//Act
+			var result = Converter.Convert(options);
+
+			//Assert
+			Assert.That(result.Type, Is.EqualTo(ConversionResultType.Failed));
+		}
+
+		[Test]
+		public void Convert_InputConverterSucceeds_SendsDataToOutput()
+		{
+			//Arrange
+			Options options = new Options() { InputType = "supported", InputLocation = "pass", OutputType = "supported", OutputLocation = "pass", Parsed = true };
+			var outputConverter = new FakeOutputConverter("supported", true);
+			var inputConverter = new FakeInputConverter("supported", true);
+			Converter.Init(new FakeConverterFactory(new List<IInputConverter>() { inputConverter }, new List<IOutputConverter>() { outputConverter }));
+
+			//Act
+			var result = Converter.Convert(options);
+
+			//Assert
+			Assert.That(outputConverter.ReceivedData, Is.EqualTo(options.InputLocation));
+		}
 	}
 }

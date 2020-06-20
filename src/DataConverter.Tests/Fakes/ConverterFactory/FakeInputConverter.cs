@@ -15,9 +15,11 @@ namespace DataConverter.Tests.Fakes.ConverterFactory
 			_succeeds = succeeds;
 		}
 
-		public IEnumerable<string> SupportedTypes()
+		public bool GetInput(string inputType, string inputLocation, out object inputData)
 		{
-			return _supportedTypes;
+			inputData = inputLocation;
+
+			return _succeeds;
 		}
 	}
 }

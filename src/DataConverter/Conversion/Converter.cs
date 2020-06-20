@@ -26,9 +26,13 @@ namespace DataConverter.Conversion
 				throw new ArgumentOutOfRangeException(nameof(options));
 			}
 
-			// make sure we support the input and output types
 			var inputConverter = _converterFactory.GetInputConverter(options.InputType);
 			if(inputConverter == null)
+			{
+				return new ConversionResult(ConversionResultType.Failed);
+			}
+
+			if(!inputConverter.GetInput(options.InputType, options.InputLocation, out object inputData))
 			{
 				return new ConversionResult(ConversionResultType.Failed);
 			}
@@ -39,9 +43,9 @@ namespace DataConverter.Conversion
 				return new ConversionResult(ConversionResultType.Failed);
 			}
 
-			if(outputConverter.DoWork())
+			if(!outputConverter.PushOutput(inputData, options.OutputType, options.OutputLocation))
 			{
-				return new ConversionResult(ConversionResultType.Successful);
+				return new ConversionResult(ConversionResultType.Failed);
 			}
 
 			return new ConversionResult(ConversionResultType.Successful);

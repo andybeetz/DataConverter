@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace DataConverter.Interfaces
+﻿namespace DataConverter.Interfaces
 {
 	public interface IInputConverter
 	{
-		IEnumerable<string> SupportedTypes();
+		bool GetInput(string inputType, string inputLocation, out object inputData);
 	}
 }

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DataConverter.Interfaces
+﻿namespace DataConverter.Interfaces
 {
 	public interface IOutputConverter
 	{
+		public bool PushOutput(object data, string outputType, string outputLocation);
 	}
 }
