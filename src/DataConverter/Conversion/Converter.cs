@@ -27,28 +27,20 @@ namespace DataConverter.Conversion
 			}
 
 			var inputConverter = _converterFactory.GetInputConverter(options.InputType);
-			if(inputConverter == null)
-			{
-				return new ConversionResult(ConversionResultType.Failed);
-			}
-
-			if(!inputConverter.GetInput(options.InputType, options.InputLocation, out object inputData))
-			{
-				return new ConversionResult(ConversionResultType.Failed);
-			}
-
 			var outputConverter = _converterFactory.GetOutputConverter(options.OutputType);
-			if(outputConverter == null)
+
+			if(inputConverter != null && outputConverter != null)
 			{
-				return new ConversionResult(ConversionResultType.Failed);
+				if(inputConverter.GetInput(options.InputType, options.InputLocation, out object inputData))
+				{
+					if(outputConverter.PushOutput(inputData, options.OutputType, options.OutputLocation))
+					{
+						return new ConversionResult(ConversionResultType.Successful);
+					}
+				}
 			}
 
-			if(!outputConverter.PushOutput(inputData, options.OutputType, options.OutputLocation))
-			{
-				return new ConversionResult(ConversionResultType.Failed);
-			}
-
-			return new ConversionResult(ConversionResultType.Successful);
+			return new ConversionResult(ConversionResultType.Failed);
 		}
 	}
 }
