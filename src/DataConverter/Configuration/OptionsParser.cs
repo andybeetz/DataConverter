@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using CommandLine;
+
+using System.Collections.Generic;
 
 namespace DataConverter.Configuration
 {
@@ -6,7 +8,25 @@ namespace DataConverter.Configuration
 	{
 		public static Options Parse(IEnumerable<string> arguments)
 		{
-			return new Options();
+			if(arguments == null)
+			{
+				return new Options();
+			}
+
+			Options options = null;
+
+			Parser.Default.ParseArguments<Options>(arguments)
+				   .WithParsed<Options>(o =>
+				   {
+					   options = o;
+					   options.Parsed = true;
+				   })
+				   .WithNotParsed<Options>(o =>
+				   {
+					   options = new Options();
+				   });
+
+			return options;
 		}
 	}
 }
