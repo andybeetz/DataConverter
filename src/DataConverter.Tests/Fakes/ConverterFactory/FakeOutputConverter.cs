@@ -1,17 +1,17 @@
 ﻿using DataConverter.Interfaces;
 
-using System.Collections.Generic;
-
 namespace DataConverter.Tests.Fakes.ConverterFactory
 {
 	public class FakeOutputConverter : IOutputConverter
 	{
-		private List<string> _supportedTypes = new List<string>();
+		private string _supportedType;
 		private bool _succeeds;
 
-		public FakeOutputConverter(string supportedType, bool succeeds)
+		public string SupportedType => _supportedType;
+
+		public FakeOutputConverter(string supportedType, bool succeeds = true)
 		{
-			_supportedTypes.Add(supportedType);
+			_supportedType = supportedType;
 			_succeeds = succeeds;
 		}
 

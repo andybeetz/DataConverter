@@ -3,6 +3,9 @@
 	public interface IConverterFactory
 	{
 		IInputConverter GetInputConverter(string inputConverterType);
-		IOutputConverter GetOutputConverter(string outputType);
+		IOutputConverter GetOutputConverter(string outputConverterType);
+
+		public void AddInputConverter(IInputConverter inputConverter);
+		public void AddOutputConverter(IOutputConverter outputConverter);
 	}
 }
