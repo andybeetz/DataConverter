@@ -15,7 +15,7 @@ namespace DataConverter.Tests.UnitTests.Conversion.Converters.CsvConverterTests
 		public void PushOutput_WhenCalled_OutputsCorrectCSV()
 		{
 			// Arrange
-			var expectedCsv = "name,street,town\r\nDave,street,town\r\nAndy,someRoad,someTown\r\n";
+			var expectedCsv = "name,address_line1,address_line2\r\nDave,street,town\r\nAndy,someRoad,someTown\r\n";
 			var fileStreamProvider = new FakeFileStreamProvider("");
 			var outputLocation = "someOutputLocation";
 			var csvConverter = new CsvConverter(fileStreamProvider);
