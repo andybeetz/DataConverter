@@ -1,15 +1,26 @@
 ﻿using DataConverter.Interfaces;
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace DataConverter.Tests.Fakes
 {
 	public class FakeFileStreamProvider : IFileStreamProvider
 	{
 		public string ReadData;
+		public string WrittenData
+		{
+			get
+			{
+				_stream.Position = 0;
+				using(var reader = new StreamReader(_stream))
+				{
+					return reader.ReadToEnd();
+				}
+			}
+		}
+
+		private Stream _stream;
+
 		public FakeFileStreamProvider(string streamDataToRead)
 		{
 			ReadData = streamDataToRead;
@@ -17,13 +28,13 @@ namespace DataConverter.Tests.Fakes
 
 		public Stream GetFileStream(string path)
 		{
-			var stream = new MemoryStream();
-			var writer = new StreamWriter(stream, leaveOpen: true);
+			_stream = new MemoryStream();
+			var writer = new StreamWriter(_stream, leaveOpen: true);
 			writer.Write(ReadData);
 			writer.Flush();
 			writer.Dispose();
-			stream.Position = 0;
-			return stream;
+			_stream.Position = 0;
+			return _stream;
 		}
 	}
 }
