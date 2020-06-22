@@ -12,7 +12,9 @@ namespace DataConverter.Conversion.Converters
 
 		public bool GetInput(string inputLocation, out IEnumerable<DataRecord> inputData)
 		{
-			throw new NotImplementedException();
+			inputData = null;
+
+			return false;
 		}
 	}
 }
