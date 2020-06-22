@@ -48,9 +48,9 @@ namespace DataConverter.Tests.UnitTests.Conversion.Converters.CsvConverterTests
 			Assert.That(record.Items[1].Name, Is.EqualTo("address"));
 			Assert.That((record.Items[1] as ItemGroup).Items, Has.Exactly(2).Items);
 			Assert.That((record.Items[1] as ItemGroup).Items[0].Name, Is.EqualTo("line1"));
-			Assert.That(((record.Items[1] as ItemGroup).Items[0] as SingleItem).Name, Is.EqualTo("street"));
+			Assert.That(((record.Items[1] as ItemGroup).Items[0] as SingleItem).Value, Is.EqualTo("street"));
 			Assert.That((record.Items[1] as ItemGroup).Items[1].Name, Is.EqualTo("line2"));
-			Assert.That(((record.Items[1] as ItemGroup).Items[1] as SingleItem).Name, Is.EqualTo("town"));
+			Assert.That(((record.Items[1] as ItemGroup).Items[1] as SingleItem).Value, Is.EqualTo("town"));
 		}
 	}
 }
