@@ -3,7 +3,6 @@
 using DataConverter.Interfaces;
 using DataConverter.Model;
 
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -12,7 +11,7 @@ using System.Linq;
 
 namespace DataConverter.Conversion.Converters
 {
-	public class CsvConverter : IInputConverter
+	public class CsvConverter : IInputConverter, IOutputConverter
 	{
 		private IFileStreamProvider _fileStreamProvider;
 
@@ -94,6 +93,84 @@ namespace DataConverter.Conversion.Converters
 			}
 
 			inputData = data;
+
+			return true;
+		}
+
+		public bool PushOutput(IEnumerable<DataRecord> data, string outputLocation)
+		{
+			if(data == null || data.Count() == 0)
+			{
+				return false;
+			}
+
+			foreach(var record in data)
+			{
+				foreach(var item in record.Items)
+				{
+					if(item is SingleItem)
+					{
+					}
+
+					if(item is ItemGroup)
+					{
+						var itemGroup = item as ItemGroup;
+
+						foreach(var groupedItem in itemGroup.Items)
+						{
+						}
+					}
+				}
+			}
+
+			var stream = _fileStreamProvider.GetFileStream(outputLocation);
+			using(var writer = new StreamWriter(stream, leaveOpen: true))
+			using(var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+			{
+				// write header
+				foreach(var item in data.First().Items)
+				{
+					if(item is SingleItem)
+					{
+						csv.WriteField(((SingleItem)item).Name);
+					}
+
+					if(item is ItemGroup)
+					{
+						var itemGroup = item as ItemGroup;
+						var firstPartOfName = item.Name;
+
+						foreach(var groupedItem in itemGroup.Items)
+						{
+							csv.WriteField($"{firstPartOfName}_{((SingleItem)groupedItem).Name}");
+						}
+					}
+				}
+				csv.NextRecord();
+
+				foreach(var record in data)
+				{
+					foreach(var item in record.Items)
+					{
+						if(item is SingleItem)
+						{
+							csv.WriteField(((SingleItem)item).Value);
+						}
+
+						if(item is ItemGroup)
+						{
+							var itemGroup = item as ItemGroup;
+
+							foreach(var groupedItem in itemGroup.Items)
+							{
+								csv.WriteField(((SingleItem)groupedItem).Value);
+							}
+						}
+					}
+					csv.NextRecord();
+				}
+				csv.Flush();
+			}
 
 			return true;
 		}
