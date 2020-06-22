@@ -1,12 +1,14 @@
 ﻿using DataConverter.Configuration;
 using DataConverter.Conversion;
 using DataConverter.Interfaces;
+using DataConverter.Model;
 using DataConverter.Tests.Fakes.ConverterFactory;
 
 using NUnit.Framework;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DataConverter.Tests.UnitTests.Conversion.ConverterTests
 {
@@ -126,9 +128,10 @@ namespace DataConverter.Tests.UnitTests.Conversion.ConverterTests
 
 			//Act
 			var result = Converter.Convert(options);
+			var item = outputConverter.ReceivedData.First().Items.First() as SingleItem;
 
 			//Assert
-			Assert.That(outputConverter.ReceivedData, Is.EqualTo(options.InputLocation));
+			Assert.That(item.Value, Is.EqualTo(options.InputLocation));
 		}
 	}
 }
