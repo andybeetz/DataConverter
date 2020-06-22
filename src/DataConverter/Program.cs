@@ -64,6 +64,7 @@ namespace DataConverter
 
 			// add converters to the factory
 			serviceProvider.GetService<IConverterFactory>().AddInputConverter(new CsvConverter(serviceProvider.GetService<IFileStreamProvider>()));
+			serviceProvider.GetService<IConverterFactory>().AddInputConverter(new JsonConverter(serviceProvider.GetService<IFileStreamProvider>()));
 			serviceProvider.GetService<IConverterFactory>().AddOutputConverter(new JsonConverter(serviceProvider.GetService<IFileStreamProvider>()));
 			serviceProvider.GetService<IConverterFactory>().AddOutputConverter(new CsvConverter(serviceProvider.GetService<IFileStreamProvider>()));
 
