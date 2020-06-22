@@ -1,13 +1,7 @@
 ﻿using DataConverter.Conversion.Converters;
+using DataConverter.Tests.Fakes;
 
 using NUnit.Framework;
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataConverter.Tests.UnitTests.Conversion.Converters.CsvConverterTests
 {
@@ -19,7 +13,8 @@ namespace DataConverter.Tests.UnitTests.Conversion.Converters.CsvConverterTests
 		{
 			// Arrange
 			var expectedType = "csv";
-			var csvConverter = new CsvConverter();
+			var fileStreamProvider = new FakeFileStreamProvider("");
+			var csvConverter = new CsvConverter(fileStreamProvider);
 
 			// Act
 			var result = csvConverter.SupportedType;
