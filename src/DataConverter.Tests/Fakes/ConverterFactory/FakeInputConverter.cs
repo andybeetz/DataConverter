@@ -1,4 +1,8 @@
 ﻿using DataConverter.Interfaces;
+using DataConverter.Model;
+
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DataConverter.Tests.Fakes.ConverterFactory
 {
@@ -15,9 +19,10 @@ namespace DataConverter.Tests.Fakes.ConverterFactory
 
 		public string SupportedType => _supportedType;
 
-		public bool GetInput(string inputType, string inputLocation, out object inputData)
+		public bool GetInput(string inputLocation, out IEnumerable<DataRecord> inputData)
 		{
-			inputData = inputLocation;
+			inputData = new List<DataRecord>() { new DataRecord() };
+			inputData.First().Items.Add(new SingleItem() { Name = "fake", Value = inputLocation });
 
 			return _succeeds;
 		}

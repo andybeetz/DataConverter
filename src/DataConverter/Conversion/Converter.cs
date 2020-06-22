@@ -1,7 +1,9 @@
 ﻿using DataConverter.Configuration;
 using DataConverter.Interfaces;
+using DataConverter.Model;
 
 using System;
+using System.Collections.Generic;
 
 namespace DataConverter.Conversion
 {
@@ -31,9 +33,9 @@ namespace DataConverter.Conversion
 
 			if(inputConverter != null && outputConverter != null)
 			{
-				if(inputConverter.GetInput(options.InputType, options.InputLocation, out object inputData))
+				if(inputConverter.GetInput(options.InputLocation, out IEnumerable<DataRecord> inputData))
 				{
-					if(outputConverter.PushOutput(inputData, options.OutputType, options.OutputLocation))
+					if(outputConverter.PushOutput(inputData, options.OutputLocation))
 					{
 						return new ConversionResult(ConversionResultType.Successful);
 					}

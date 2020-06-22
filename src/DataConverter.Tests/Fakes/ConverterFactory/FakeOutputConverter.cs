@@ -1,4 +1,7 @@
 ﻿using DataConverter.Interfaces;
+using DataConverter.Model;
+
+using System.Collections.Generic;
 
 namespace DataConverter.Tests.Fakes.ConverterFactory
 {
@@ -15,12 +18,12 @@ namespace DataConverter.Tests.Fakes.ConverterFactory
 			_succeeds = succeeds;
 		}
 
-		public bool PushOutput(object data, string outputType, string outputLocation)
+		public bool PushOutput(IEnumerable<DataRecord> data, string outputLocation)
 		{
 			ReceivedData = data;
 			return _succeeds;
 		}
 
-		public object ReceivedData { get; set; }
+		public IEnumerable<DataRecord> ReceivedData { get; set; }
 	}
 }
